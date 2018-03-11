@@ -1,0 +1,5 @@
+﻿  main.c
+d:\program files\smartgit\bin\hafman\hafman\main.c(12): warning C4013: strcmp: нет определения; предполагается "extern" с возвратом типа "int"
+d:\program files\smartgit\bin\hafman\hafman\main.c(10): warning C4101: out: неиспользованная локальная переменная
+d:\program files\smartgit\bin\hafman\hafman\main.c(10): warning C4101: in: неиспользованная локальная переменная
+  hafman.vcxproj -> D:\Program Files\SmartGit\bin\Hafman\hafman\x64\Debug\hafman.exe
