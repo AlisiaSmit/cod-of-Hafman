@@ -1,2 +1,3 @@
-/Hafman/*.txt
-/Hafman/Hafman.vcxproj.filters
+Hafman/*.txt
+Hafman/Hafman.vcxproj.filters
+Hafman/x64/
