@@ -2,7 +2,8 @@
 
 void count_sym(char *syms, short elems);
 void processing(FILE *in);
-int seearch_max(char *abc);
+int seearch_min(char *abc);
+void create_tree(Tree *root);
 
 int abc[256] = { 0 };
 
@@ -13,6 +14,8 @@ typedef struct Tree_st
 	char value;
 	int count;
 }Tree;
+
+
 
 void processing(FILE *in)
 {
@@ -33,10 +36,17 @@ void count_sym(unsigned char *syms, short elems)
 		abc[syms[i]] ++;
 }
 
+void create_tree(root)
+{
+	int value;
+	value = search_min(abc);
+}
+
 void encoder(FILE *in, FILE *out)
 {
+	Tree *root;
 	fseek(in, 2, SEEK_CUR);
 
 	processing(in);
-	
+	create_tree(root);
 }

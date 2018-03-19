@@ -1,3 +1,6 @@
 ﻿  encoder.c
-d:\program files\smartgit\bin\hafman\hafman\encoder.c(30): warning C4028: формальный параметр 1 отличается от объявления
-  Hafman.vcxproj -> D:\Program Files\SmartGit\bin\Hafman\Hafman\x64\Debug\Hafman.exe
+d:\program files\smartgit\bin\hafman\hafman\encoder.c(6): error C2143: синтаксическая ошибка: отсутствие ")" перед "*"
+d:\program files\smartgit\bin\hafman\hafman\encoder.c(6): error C2143: синтаксическая ошибка: отсутствие "{" перед "*"
+d:\program files\smartgit\bin\hafman\hafman\encoder.c(6): error C2059: синтаксическая ошибка: )
+d:\program files\smartgit\bin\hafman\hafman\encoder.c(33): warning C4028: формальный параметр 1 отличается от объявления
+d:\program files\smartgit\bin\hafman\hafman\encoder.c(42): warning C4013: search_min: нет определения; предполагается "extern" с возвратом типа "int"
