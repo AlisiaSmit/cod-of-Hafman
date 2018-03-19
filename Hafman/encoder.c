@@ -2,10 +2,16 @@
 
 void count_sym(char *syms, short elems);
 void processing(FILE *in);
-int seearch_min(char *abc);
+int seearch_min();
 void create_tree(Tree *root);
 
 int abc[256] = { 0 };
+
+typedef struct Queue_st
+{
+	struct Queue *next;
+	struct Queue *prev;
+}Queue;
 
 typedef struct Tree_st
 {
@@ -14,7 +20,6 @@ typedef struct Tree_st
 	char value;
 	int count;
 }Tree;
-
 
 
 void processing(FILE *in)
@@ -36,7 +41,16 @@ void count_sym(unsigned char *syms, short elems)
 		abc[syms[i]] ++;
 }
 
-void create_tree(root)
+int search_min(int *abc)
+{
+	int i = 0;
+	//
+	return i;
+}
+
+
+// where? What?
+void create_tree(Tree *head)
 {
 	int value;
 	value = search_min(abc);
@@ -44,9 +58,9 @@ void create_tree(root)
 
 void encoder(FILE *in, FILE *out)
 {
-	Tree *root;
+	Tree *head = NULL;
 	fseek(in, 2, SEEK_CUR);
 
 	processing(in);
-	create_tree(root);
+	create_tree(head);
 }

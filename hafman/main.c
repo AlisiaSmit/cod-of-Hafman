@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
 	FILE *in, *out;
 	char c;
 
-	if (argc <= 2) return 0;
+	if (argc < 2) return 0;
 
 	in = fopen(argv[1], "rb");
 	if(!verification(in)) return 0;
