@@ -92,20 +92,19 @@ tree *build_HT(prio_q *head)
 prio_q* create_que(prio_q *head)
 {
 	int num = search_max;
-	prio_q *new_el, *tmp = NULL;
+	prio_q *new_el = NULL, *tmp = NULL;
 	tree *list;
 	
 	while (num != NOT_FOUND)
 	{
-		//head = new_el;
-		//head->next = tmp;
 		new_el = (prio_q*)calloc(sizeof(prio_q));
 		list = (tree*)calloc(sizeof(tree));
 		list->count = abc[num];
 		list->val = (unsigned char)num;
 		new_el->elem = list;
-		//tmp = new_el;
-		// необходимо  пееприсвоение головы списка
+		head = new_el;
+		head->next = tmp;
+		tmp = new_el;
 	}
 	return head;
 }
@@ -119,6 +118,6 @@ void encoder(FILE *in, FILE *out)
 	fseek(in, 2, SEEK_CUR);
 
 	file_processing(in);
-//	head = 
+	head = create_que(head);
 	root = build_HT(head);
 }
