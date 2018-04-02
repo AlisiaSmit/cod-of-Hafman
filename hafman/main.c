@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include "header.h"
+#include "structs.h"
 
 int verification(FILE *in);
 
@@ -15,7 +16,7 @@ int main(int argc, char *argv[])
 	if (argc < 2) return 0;
 
 	in = fopen(argv[1], "rb");
-	if(!verification(in)) return 0;
+	if(verification(in)) return 0;
 
 	out = fopen(argv[2], "w+b");
 

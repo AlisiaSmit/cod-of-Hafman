@@ -1,30 +1,39 @@
 #include "header.h"
+#include "structs.h"
 
-#define NOT_FOUND -1;
+#define NOT_FOUND -1
 
 int abc[256] = { 0 };
 
-typedef struct Queue_st
-{
-	struct Queue *next;
-	struct Queue *prev;
-}Queue;
-
-typedef struct Tree_st
-{
-	struct Tree_st *reight;
-	struct Tree_st *left;
-	char value;
-	int count;
-}Tree;
-
-
+prio_q *insertElem(prio_q * head, tree *elem);
 void file_processing(FILE *in);
-int search_min(int *abc);
-void create_tree(Tree *head);
-void create_queue(Queue *head, Queue *tail);
-Queue* enque(Queue *tail, unsigned char sym);
+int search_max(int *abc);
 
+prio_q *insertElem(prio_q * head, tree *elem)
+{
+	prio_q *new_elem = calloc(sizeof(prio_q));
+	new_elem->elem = elem;
+	new_elem->next = NULL;
+	if (!head)	return new_elem;
+	if (new_elem->elem->count <= head->elem->count)
+	{
+		new_elem->next = head;
+		return new_elem;
+	}
+	prio_q *tmp = head;
+	while (!(tmp->next))
+	{
+		if (new_elem->elem->count <= tmp->next->elem->count)
+		{
+			new_elem->next = tmp->next;
+			tmp->next = new_elem;
+			return head;
+		}
+		tmp = tmp->next;
+	}
+	tmp->next = new_elem;
+	return head;
+}
 
 void file_processing(FILE *in)
 {
@@ -33,7 +42,7 @@ void file_processing(FILE *in)
 
 	do
 	{
-		red_el = (short)fread(syms, sizeof(char), 1, in);
+		red_el = (short)fread(syms, sizeof(char), 3, in);
 	
 		for (i; i < red_el; i++)
 			abc[syms[i]] ++;
@@ -42,55 +51,74 @@ void file_processing(FILE *in)
 	} while (red_el == 3);
 }
 
-int search_min(int *abc)
+int search_max(int *abc)
 {
 	int i = 0;
-	int min_i = NOT_FOUND;
-	int min = 0;
+	int max_i = NOT_FOUND;
+	int max = 0;
 	for (i; i < 256; i++)
 	{
-		if (abc[i] < min)
+		if (abc[i] > max)
 		{
-			min = abc[i];
-			min_i = i;
+			max = abc[i];
+			max_i = i;
 		}
 	}
 
-	if (min_i != -1)   // if (min_i != NOT_FOUND) doesn't work
-		abc[min_i] = 0;
-	return min_i;
+	return max_i;
 }
 
-Queue* enque(Queue *tail, unsigned char sym)
-{
 
-}
-
-void create_queue(Queue *head, Queue *tail)
+tree *build_HT(prio_q *head)
 {
-	int i = 0;
-	while ((i = search_min(abc)) != -1) // with NOT_FOUND doesn't work
+	tree *buf;
+	prio_q *new_head, *first, *second;
+
+	while (head->next != NULL)
 	{
-	tail = enque(tail, (unsigned char)i);
-
+		new_head = head->next->next;
+		first = head; 
+		second = head->next;
+		buf = merge(first->elem, second->elem);
+		head = insertElem(new_head, buf);
+		free(first);
+		free(second);
 	}
+	buf = head->elem;
+	free(head);
+	return buf;
 }
 
-// where? What?
-void create_tree(Tree *head)
+prio_q* create_que(prio_q *head)
 {
-	int value;
-	value = search_min(abc);
+	int num = search_max;
+	prio_q *new_el, *tmp = NULL;
+	tree *list;
+	
+	while (num != NOT_FOUND)
+	{
+		//head = new_el;
+		//head->next = tmp;
+		new_el = (prio_q*)calloc(sizeof(prio_q));
+		list = (tree*)calloc(sizeof(tree));
+		list->count = abc[num];
+		list->val = (unsigned char)num;
+		new_el->elem = list;
+		//tmp = new_el;
+		// необходимо  пееприсвоение головы списка
+	}
+	return head;
 }
+
 
 void encoder(FILE *in, FILE *out)
 {
-	Queue *head_q = NULL, *tail = NULL;
-	Tree *head_t = NULL;
-
+	prio_q *head = NULL;
+	tree *root = NULL;
+	
 	fseek(in, 2, SEEK_CUR);
 
 	file_processing(in);
-	create_queue(head_q, tail);
-	create_tree(head_t);
+//	head = 
+	root = build_HT(head);
 }

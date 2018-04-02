@@ -118,9 +118,11 @@
     <ClCompile Include="decoder.c" />
     <ClCompile Include="encoder.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="structs.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header.h" />
+    <ClInclude Include="structs.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="test.txt" />
