@@ -22,8 +22,8 @@ typedef struct Queue_st
 
 typedef struct Tree_st
 {
-	unsigned char val;
 	int count;
+	unsigned char val;
 	struct Tree_st *right;
 	struct Tree_st *left;
 	struct Tree_st *root;
@@ -38,7 +38,7 @@ typedef struct Priority_Q_st
 
 // добавляет элемент в начало стека
 // возврящает ссылку наэтот элемент
-stack *push(stack *head, int *value);
+stack *push(stack *head, int value);
 
 // если стек пуст, ничего не возвращает
 // если нет - возврящает элемент из начаа стека

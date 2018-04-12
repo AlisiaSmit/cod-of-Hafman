@@ -1,10 +1,1 @@
-﻿  encoder.c
-d:\program files\smartgit\bin\hafman\hafman\encoder.c(14): warning C4013: calloc: нет определения; предполагается "extern" с возвратом типа "int"
-d:\program files\smartgit\bin\hafman\hafman\encoder.c(14): warning C4047: инициализация: "prio_q *" отличается по уровням косвенного обращения от "int"
-d:\program files\smartgit\bin\hafman\hafman\encoder.c(82): warning C4013: merge: нет определения; предполагается "extern" с возвратом типа "int"
-d:\program files\smartgit\bin\hafman\hafman\encoder.c(82): warning C4047: =: "tree *" отличается по уровням косвенного обращения от "int"
-d:\program files\smartgit\bin\hafman\hafman\encoder.c(84): warning C4013: free: нет определения; предполагается "extern" с возвратом типа "int"
-d:\program files\smartgit\bin\hafman\hafman\encoder.c(100): warning C4312: приведение типов: преобразование из "int" в "prio_q *" большего размера
-d:\program files\smartgit\bin\hafman\hafman\encoder.c(101): warning C4312: приведение типов: преобразование из "int" в "tree *" большего размера
-d:\program files\smartgit\bin\hafman\hafman\encoder.c(94): warning C4047: инициализация: "int" отличается по уровням косвенного обращения от "int (__cdecl *)(int *)"
-  Hafman.vcxproj -> D:\Program Files\SmartGit\bin\Hafman\Hafman\x64\Debug\Hafman.exe
+﻿  Hafman.vcxproj -> D:\Program Files\SmartGit\bin\Hafman\Hafman\x64\Debug\Hafman.exe

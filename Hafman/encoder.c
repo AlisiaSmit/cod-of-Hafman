@@ -91,20 +91,22 @@ tree *build_HT(prio_q *head)
 
 prio_q* create_que(prio_q *head)
 {
-	int num = search_max;
-	prio_q *new_el = NULL, *tmp = NULL;
-	tree *list;
-	
+	int num = search_max(abc);
+	prio_q *tmp = NULL;
+	prio_q *new_el;
+	tree *singl_tree;
 	while (num != NOT_FOUND)
 	{
 		new_el = (prio_q*)calloc(sizeof(prio_q));
-		list = (tree*)calloc(sizeof(tree));
-		list->count = abc[num];
-		list->val = (unsigned char)num;
-		new_el->elem = list;
+		singl_tree = (tree*)calloc(sizeof(tree));
+		singl_tree->count = abc[num];
+		singl_tree->val = (unsigned char)num;
+		abc[num] = 0;
+		new_el->elem = singl_tree;
 		head = new_el;
 		head->next = tmp;
 		tmp = new_el;
+		num = search_max(abc);
 	}
 	return head;
 }
