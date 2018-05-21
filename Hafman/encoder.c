@@ -1,125 +1,224 @@
 #include "header.h"
-#include "structs.h"
 
-#define NOT_FOUND -1
-
+sym *Haf[256];
 int abc[256] = { 0 };
+int arr_bit[8]; int num_bit;
+int haf_cod[8] = { 0 };
 
-prio_q *insertElem(prio_q * head, tree *elem);
-void file_processing(FILE *in);
-int search_max(int *abc);
-
-prio_q *insertElem(prio_q * head, tree *elem)
+int  file_processing(FILE *in)
 {
-	prio_q *new_elem = calloc(sizeof(prio_q));
-	new_elem->elem = elem;
-	new_elem->next = NULL;
-	if (!head)	return new_elem;
-	if (new_elem->elem->count <= head->elem->count)
-	{
-		new_elem->next = head;
-		return new_elem;
-	}
-	prio_q *tmp = head;
-	while (!(tmp->next))
-	{
-		if (new_elem->elem->count <= tmp->next->elem->count)
-		{
-			new_elem->next = tmp->next;
-			tmp->next = new_elem;
-			return head;
-		}
-		tmp = tmp->next;
-	}
-	tmp->next = new_elem;
-	return head;
-}
-
-void file_processing(FILE *in)
-{
-	unsigned char syms[3];
-	short red_el = 0, i = 0;
+	int count = 0;
+	unsigned char syms[1];
+	int read_el = 0, i = 0;
 
 	do
 	{
-		red_el = (short)fread(syms, sizeof(char), 3, in);
-	
-		for (i; i < red_el; i++)
-			abc[syms[i]] ++;
-		
-		i = 0;
-	} while (red_el == 3);
+		read_el = fread(syms, sizeof(char), 1, in);
+		if (abc[syms[0]] == 0) count++;
+		abc[syms[0]] ++;
+	} while (read_el == 1);
+
+	return count;
 }
 
-int search_max(int *abc)
+tree* create_branch(int *abc, int num)
 {
-	int i = 0;
-	int max_i = NOT_FOUND;
-	int max = 0;
-	for (i; i < 256; i++)
-	{
-		if (abc[i] > max)
-		{
-			max = abc[i];
-			max_i = i;
-		}
-	}
-
-	return max_i;
+	tree *root;
+	root = (tree*)calloc(1, sizeof(tree));
+	memset(root, 0, sizeof(tree));
+	root->count = abc[num];
+	root->val = (unsigned char)num;
+	return root;
 }
 
-
-tree *build_HT(prio_q *head)
+prio_q* build_queue(int num, prio_q *head)
 {
-	tree *buf;
-	prio_q *new_head, *first, *second;
-
-	while (head->next != NULL)
+	if (!head)
 	{
-		new_head = head->next->next;
-		first = head; 
-		second = head->next;
-		buf = merge(first->elem, second->elem);
-		head = insertElem(new_head, buf);
-		free(first);
-		free(second);
-	}
-	buf = head->elem;
-	free(head);
-	return buf;
-}
-
-prio_q* create_que(prio_q *head)
-{
-	int num = search_max(abc);
-	prio_q *tmp = NULL;
-	prio_q *new_el;
-	tree *singl_tree;
-	while (num != NOT_FOUND)
-	{
-		new_el = (prio_q*)calloc(sizeof(prio_q));
-		singl_tree = (tree*)calloc(sizeof(tree));
-		singl_tree->count = abc[num];
-		singl_tree->val = (unsigned char)num;
-		abc[num] = 0;
-		new_el->elem = singl_tree;
+		prio_q *new_el = (prio_q*)calloc(1, sizeof(prio_q));
+		new_el->elem = create_branch(abc, num);
 		head = new_el;
-		head->next = tmp;
-		tmp = new_el;
-		num = search_max(abc);
+		return head;
 	}
+	if (head->elem->count < abc[num])
+	{
+		head->next = build_queue(num, head->next);
+		return head;
+	}
+
+	prio_q *new_el = (prio_q*)calloc(1, sizeof(prio_q));
+	new_el->elem = create_branch(abc, num);
+
+	new_el->next = head;
+	head = new_el;
 	return head;
 }
 
+tree* pop(prio_q **el)
+{
+	prio_q *tmp = *el;
+	tree *tr = (*el)->elem;
+
+	*el = (*el)->next;
+	free(tmp);
+
+	return tr;
+}
+
+tree* merge(tree *l, tree *r)
+{
+	tree *new_branch = calloc(1, sizeof(tree));
+	new_branch->count = l->count + r->count;
+	new_branch->left = l;
+	new_branch->right = r;
+	return new_branch;
+}
+
+prio_q* push(prio_q *head, tree *el)
+{
+	if (!head)
+	{
+		prio_q *new_el = (prio_q*)calloc(1, sizeof(prio_q));
+		new_el->elem = el;
+		head = new_el;
+		return head;
+	}
+	if (head->elem->count < el->count)
+	{
+		head->next = push(head->next, el);
+		return head;
+	}
+
+	prio_q *new_el = (prio_q*)calloc(1, sizeof(prio_q));
+	new_el->elem = el;
+
+	new_el->next = head;
+	head = new_el;
+	return head;
+}
+
+tree* build_tree(prio_q* head)
+{
+	if (!head) return NULL;
+	tree *a, *b, *c;
+	while ((head) && (head->next))
+	{
+		a = pop(&head);
+		b = pop(&head);
+
+		c = merge(a, b);
+		head = push(head, c);
+	}
+
+	a = pop(&head);
+	return a;
+}
+
+void make_byte(int num, FILE *out)
+{
+	arr_bit[num_bit] = num;
+	num_bit++;
+	if (num_bit == 8)
+	{
+		unsigned char c = 0;
+		for (int j = 0; j < 8; j++)
+			c = ((c << 1) | arr_bit[j]);
+		fprintf(out, "%c", c);
+		num_bit = 0;
+	}
+}
+
+void make_Haf_sym(unsigned char symb, int i)
+{
+	Haf[symb] = (sym*)calloc(1, sizeof(sym));
+	Haf[symb]->count = i;
+	Haf[symb]->sym_Haf = (int*)calloc(i, sizeof(int));
+	for (int j = 0; j <= i; j++)
+		Haf[symb]->sym_Haf[j] = haf_cod[j];
+}
+
+
+void dfs(FILE *out, tree *root, int count_haf)
+{
+	if (root->left)
+	{
+		make_byte(0, out);
+		haf_cod[count_haf] = 0;
+		dfs(out, root->left, count_haf + 1);
+		make_byte(1, out);
+	}
+	if (root->right)
+	{
+		make_byte(0, out);
+		haf_cod[count_haf] = 1;
+		dfs(out, root->right, count_haf + 1);
+		make_byte(1, out);
+	}
+	if (!((root->left) || (root->left)))
+	{
+		make_byte(1, out);
+		unsigned int c;
+		for (int j = 0; j < 8; j++)
+		{
+			c = ((root->val) >> (7 - j)) & 1;
+			make_byte(c, out);
+		}
+		make_Haf_sym(root->val, count_haf);
+	}
+}
+
+void coding_text(FILE *in, FILE *out)
+{
+	unsigned char c;
+	int i = 0;
+
+	c = fgetc(in);
+	while (!feof(in))
+	{
+		for (i = 0; i < Haf[c]->count; i++)
+			make_byte(Haf[c]->sym_Haf[i], out);
+		c = fgetc(in);
+	}
+
+	if (num_bit != 0)
+	{
+		for (i = num_bit; i < 8; i++)
+			arr_bit[i] = 0;
+		c = 0;
+		for (i = 0; i < 8; i++)
+			c = ((c << 1) | arr_bit[i]);
+		fprintf(out, "%c", c);
+	}
+}
+
+void create_new_file(FILE *in, FILE *out, tree *root, int num_cod_sym)
+{
+	fprintf(out, "d \r  %d ", num_cod_sym);
+
+	dfs(out, root, 0);
+
+	fseek(in, 3, SEEK_SET);
+	coding_text(in, out);
+
+	fseek(out, 3, SEEK_SET);
+	fprintf(out, "%d", (8 - num_bit) % 8);
+}
 
 void encoder(FILE *in, FILE *out)
 {
 	prio_q *head = NULL;
-	tree *root = NULL;
-	
-	fseek(in, 2, SEEK_CUR);
+	tree *root;
+	int num_cod_sym = 0;
 
-	file_processing(in);
-	head = create_que(head);
-	root = build_HT(head);
+	fseek(in, 3, SEEK_SET);
+
+	num_cod_sym = file_processing(in);
+
+	for (int i = 0; i < 256; i++)
+		if (abc[i] != 0)
+			head = build_queue(i, head);
+
+	root = build_tree(head);
+
+	create_new_file(in, out, root, num_cod_sym);
 }
