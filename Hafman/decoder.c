@@ -132,23 +132,42 @@ unsigned char search_in_tree(tree* root, FILE *in)
 							return search_in_tree(root->right, in);
 }
 
-void decoding_text(FILE *in, FILE *out, tree *root, int byte_indent)
+void decoding_text(FILE *in, FILE *out, tree *root, int byte_indent, long long int sizef)
 {
 	unsigned char c;
+	num_bit++;
 	while (!feof(in))
 	{
 		num_bit--;
 		c = search_in_tree(root, in);
 		fprintf(out, "%c", c);
+		sizef--;
 	}
-	if (!num_bit)
+	if (sizef)
 	{
 		//вот эта часть неправильная
-		for (int i = num_bit; i < 8 - byte_indent; i++)
-			if (!bits[i]) root = root->left;
-			else root = root->right;
-		c = root->val;
-		fprintf(out, "%c", c);
+		//for (int i = num_bit; i < 8 - byte_indent; i++)
+		//{
+		/*	if (root->val)
+			{
+				c = root->val;
+				root = tmp;
+				i--;
+				c = root->val;
+				fprintf(out, "%c", c);
+				continue;
+			}
+			else 
+				if (bits[i] == 0) root = root->left;
+				else root = root->right;*/
+		num_bit--;
+		for (num_bit; num_bit < 8 - byte_indent; num_bit++)
+		{
+			c = search_in_tree(root, in);
+			num_bit--;
+			fprintf(out, "%c", c);
+			sizef--;
+		}		
 	}
 }
 
@@ -174,15 +193,18 @@ void decoder(FILE *in, FILE *out)
 
 	int byte_indent;
 	int num_cod_sym;
+	long long int sizef = 0;
 	fscanf(in, "%d", &byte_indent);
 	fscanf(in, "%d", &num_cod_sym);
 
-	if (num_cod_sym == 1) printf_one_sym(in, out);
 	if (num_cod_sym == 0) end_prog(in, out);
-	
+
+	fscanf(in, "%Id", &sizef);
+
+
 	fseek(in, 1, SEEK_CUR);
 	root = scanf_tree(in, root, num_cod_sym);
 
 	//fprintf(out, "c \r");
-	decoding_text(in, out, root, byte_indent);
+	decoding_text(in, out, root, byte_indent, sizef);
 }

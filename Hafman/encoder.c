@@ -9,7 +9,7 @@ int  file_processing(FILE *in)
 {
 	int count = 0;
 	unsigned char syms[1];
-	int read_el = 0, i = 0;
+	int read_el = 0;
 
 	read_el = fread(syms, sizeof(char), 1, in);
 	if (feof(in)) return 0;
@@ -21,6 +21,23 @@ int  file_processing(FILE *in)
 		if (abc[syms[0]] == 0) count++;
 		abc[syms[0]] ++;
 	} while (read_el == 1);
+
+	return count;
+}
+
+long long int file_size(FILE *in)
+{
+	long long int count = 0;
+	unsigned char syms[1024];
+	int read = 0;
+	
+	fseek(in, 3, SEEK_SET);
+
+	do
+	{
+		read = fread(syms, sizeof(char), 1024, in);
+		count = count + read;
+	} while (read == 1024);
 
 	return count;
 }
@@ -195,10 +212,10 @@ void coding_text(FILE *in, FILE *out)
 	}
 }
 
-void create_new_file(FILE *in, FILE *out, tree *root, int num_cod_sym)
+void create_new_file(FILE *in, FILE *out, tree *root, int num_cod_sym, long long int count)
 {
 //	fprintf(out, "d \r  %d ", num_cod_sym);
-	fprintf(out, "  %d ", num_cod_sym);
+	fprintf(out, "  %d %Id ", num_cod_sym, count);
 
 	dfs(out, root, 0);
 
@@ -224,16 +241,16 @@ void copy_file(FILE *in)
 	fseek(in, 0, SEEK_SET);
 }
 
-void single_sym(FILE *in, FILE *out)
-{
-	int i = 0;
-	for (i = 0; i < 256; i++)
-		if (abc[i] != 0) break;
-
-	fprintf(out, "0 1 %d %c", abc[i] - 1, (unsigned char)i);
-
-	end_prog(in, out);
-}
+//void single_sym(FILE *in, FILE *out)
+//{
+//	int i = 0;
+//	for (i = 0; i < 256; i++)
+//		if (abc[i] != 0) break;
+//
+//	fprintf(out, "0 1 %d %c", abc[i] - 1, (unsigned char)i);
+//
+//	end_prog(in, out);
+//}
 
 void empty_file(FILE *in, FILE *out)
 {
@@ -246,14 +263,16 @@ void encoder(FILE *in, FILE *out)
 	prio_q *head = NULL;
 	tree *root;
 	int num_cod_sym = 0;
-
+	long long int fsize = 0;
+	 
 	copy_file(in);
 
 	fseek(in, 3, SEEK_SET);
 
 	num_cod_sym = file_processing(in);
+	if (num_cod_sym != 0) fsize = file_size(in);
 
-	if (num_cod_sym == 1) single_sym(in, out);
+	//if (num_cod_sym == 1) single_sym(in, out);
 	if (num_cod_sym == 0) empty_file(in, out);
 
 	for (int i = 0; i < 256; i++)
@@ -262,5 +281,5 @@ void encoder(FILE *in, FILE *out)
 
 	root = build_tree(head);
 
-	create_new_file(in, out, root, num_cod_sym);
+	create_new_file(in, out, root, num_cod_sym, fsize);
 }
