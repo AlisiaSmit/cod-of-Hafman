@@ -2,17 +2,15 @@
 
 int verification(FILE *in);
 
-int main(int argc, char *argv[])
+int main(/*int argc, char *argv[]*/)
 {
 	FILE *in, *out;
 	char c;
 
-	if (argc < 2) return 0;
-
-	in = fopen(argv[1], "rb");
+	in = fopen("in.txt", "rb");
 	if(verification(in)) return 0;
 
-	out = fopen(argv[2], "w+b");
+	out = fopen("out.txt", "wb");
 
 	c = fgetc(in);
 

@@ -193,14 +193,16 @@ void coding_text(FILE *in, FILE *out)
 
 void create_new_file(FILE *in, FILE *out, tree *root, int num_cod_sym)
 {
-	fprintf(out, "d \r  %d ", num_cod_sym);
+//	fprintf(out, "d \r  %d ", num_cod_sym);
+	fprintf(out, "  %d ", num_cod_sym);
 
 	dfs(out, root, 0);
 
 	fseek(in, 3, SEEK_SET);
 	coding_text(in, out);
 
-	fseek(out, 3, SEEK_SET);
+//	fseek(out, 3, SEEK_SET);
+	fseek(out, 0, SEEK_SET);
 	fprintf(out, "%d", (8 - num_bit) % 8);
 }
 

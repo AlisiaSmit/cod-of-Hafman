@@ -164,6 +164,6 @@ void decoder(FILE *in, FILE *out)
 	fseek(in, 1, SEEK_CUR);
 	root = scanf_tree(in, root, num_cod_sym);
 
-	fprintf(out, "c \r");
+	//fprintf(out, "c \r");
 	decoding_text(in, out, root, byte_indent);
 }
