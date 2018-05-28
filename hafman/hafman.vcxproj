@@ -124,7 +124,11 @@
     <ClInclude Include="structs.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="test.txt" />
+    <Text Include="in.txt" />
+    <Text Include="out.txt" />
+    <Text Include="x64\Debug\copyin.txt" />
+    <Text Include="x64\Debug\in.txt" />
+    <Text Include="x64\Debug\out.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -11,6 +11,10 @@ int  file_processing(FILE *in)
 	unsigned char syms[1];
 	int read_el = 0, i = 0;
 
+	read_el = fread(syms, sizeof(char), 1, in);
+	if (feof(in)) return 0;
+	fseek(in, -1, SEEK_CUR);
+
 	do
 	{
 		read_el = fread(syms, sizeof(char), 1, in);
@@ -206,15 +210,51 @@ void create_new_file(FILE *in, FILE *out, tree *root, int num_cod_sym)
 	fprintf(out, "%d", (8 - num_bit) % 8);
 }
 
+void copy_file(FILE *in)
+{
+	FILE *copyf = fopen("copyin.txt", "wb");
+	unsigned char c = 0;
+	c = fgetc(in);
+	while (!feof(in))
+	{
+		fprintf(copyf, "%c", c);
+		c = fgetc(in);
+	}
+	fclose(copyf);
+	fseek(in, 0, SEEK_SET);
+}
+
+void single_sym(FILE *in, FILE *out)
+{
+	int i = 0;
+	for (i = 0; i < 256; i++)
+		if (abc[i] != 0) break;
+
+	fprintf(out, "0 1 %d %c", abc[i] - 1, (unsigned char)i);
+
+	end_prog(in, out);
+}
+
+void empty_file(FILE *in, FILE *out)
+{
+	fprintf(out, "0 0");
+	end_prog(in, out);
+}
+
 void encoder(FILE *in, FILE *out)
 {
 	prio_q *head = NULL;
 	tree *root;
 	int num_cod_sym = 0;
 
+	copy_file(in);
+
 	fseek(in, 3, SEEK_SET);
 
 	num_cod_sym = file_processing(in);
+
+	if (num_cod_sym == 1) single_sym(in, out);
+	if (num_cod_sym == 0) empty_file(in, out);
 
 	for (int i = 0; i < 256; i++)
 		if (abc[i] != 0)

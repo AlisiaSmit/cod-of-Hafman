@@ -33,3 +33,10 @@ int verification(FILE *in)
 	}
 	return 0;
 }
+
+void end_prog(FILE *in, FILE *out)
+{
+	fclose(in);
+	fclose(out);
+	exit(0);
+}

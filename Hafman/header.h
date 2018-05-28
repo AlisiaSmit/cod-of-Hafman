@@ -10,4 +10,7 @@
 
 void encoder(FILE *in, FILE *out);
 void decoder(FILE *in, FILE *out);
+
+void end_prog(FILE *in, FILE *out);
+
 #endif

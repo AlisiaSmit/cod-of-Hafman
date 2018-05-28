@@ -13,6 +13,9 @@
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
+    <Filter Include="Файлы ресурсов\NewFilter1">
+      <UniqueIdentifier>{995dc72f-290a-4360-80ba-253eb283abaf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="decoder.c">
@@ -34,8 +37,20 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="test.txt">
+    <Text Include="in.txt">
       <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="out.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="x64\Debug\copyin.txt">
+      <Filter>Файлы ресурсов\NewFilter1</Filter>
+    </Text>
+    <Text Include="x64\Debug\in.txt">
+      <Filter>Файлы ресурсов\NewFilter1</Filter>
+    </Text>
+    <Text Include="x64\Debug\out.txt">
+      <Filter>Файлы ресурсов\NewFilter1</Filter>
     </Text>
   </ItemGroup>
 </Project>

@@ -143,12 +143,28 @@ void decoding_text(FILE *in, FILE *out, tree *root, int byte_indent)
 	}
 	if (!num_bit)
 	{
+		//вот эта часть неправильная
 		for (int i = num_bit; i < 8 - byte_indent; i++)
 			if (!bits[i]) root = root->left;
 			else root = root->right;
 		c = root->val;
 		fprintf(out, "%c", c);
 	}
+}
+
+void printf_one_sym(FILE *in, FILE *out)
+{
+	int count = 0;
+	char c = 0;
+
+	fscanf(in, "%d", &count);
+	fseek(in, 1, SEEK_CUR);
+	c = fgetc(in);
+
+	for (int i = 0; i < count; i++)
+		fprintf(out, "%c", c);
+	
+	end_prog(in, out);
 }
 
 void decoder(FILE *in, FILE *out)
@@ -160,6 +176,9 @@ void decoder(FILE *in, FILE *out)
 	int num_cod_sym;
 	fscanf(in, "%d", &byte_indent);
 	fscanf(in, "%d", &num_cod_sym);
+
+	if (num_cod_sym == 1) printf_one_sym(in, out);
+	if (num_cod_sym == 0) end_prog(in, out);
 	
 	fseek(in, 1, SEEK_CUR);
 	root = scanf_tree(in, root, num_cod_sym);
