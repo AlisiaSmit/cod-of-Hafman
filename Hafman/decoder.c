@@ -142,12 +142,11 @@ void decoding_text(FILE *in, FILE *out, tree *root, int byte_indent, long long i
 		fprintf(out, "%c", c);
 		sizef--;
 	}
-		num_bit--;
 	while (sizef)
 	{
-		num_bit++;
-		c = search_in_tree(root, in);
 		num_bit--;
+	//	num_bit++;
+		c = search_in_tree(root, in);
 		fprintf(out, "%c", c);
 		sizef--;		
 	}
@@ -173,10 +172,9 @@ void decoder(FILE *in, FILE *out)
 	tree *root = (tree*)calloc(1, sizeof(tree));
 	fseek(in, 3, SEEK_SET);
 
-	int byte_indent;
+	int byte_indent = 0;
 	int num_cod_sym;
 	long long int sizef = 0;
-	fscanf(in, "%d", &byte_indent);
 	fscanf(in, "%d", &num_cod_sym);
 
 	if (num_cod_sym == 0) end_prog(in, out);

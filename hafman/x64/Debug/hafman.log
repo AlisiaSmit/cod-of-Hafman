@@ -1,2 +1,4 @@
-﻿  main.c
+﻿  encoder.c
+d:\program files\smartgit\bin\hafman\hafman\encoder.c(20): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+d:\program files\smartgit\bin\hafman\hafman\encoder.c(38): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
   Hafman.vcxproj -> D:\Program Files\SmartGit\bin\Hafman\Hafman\x64\Debug\Hafman.exe

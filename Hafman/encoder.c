@@ -11,7 +11,7 @@ int  file_processing(FILE *in)
 	unsigned char syms[1];
 	int read_el = 0;
 
-	read_el = fread(syms, sizeof(char), 1, in);
+	read_el =(int) fread(syms, sizeof(char), 1, in);
 	if (feof(in)) return 0;
 	fseek(in, -1, SEEK_CUR);
 
@@ -215,7 +215,7 @@ void coding_text(FILE *in, FILE *out)
 void create_new_file(FILE *in, FILE *out, tree *root, int num_cod_sym, long long int count)
 {
 //	fprintf(out, "d \r  %d ", num_cod_sym);
-	fprintf(out, "  %d %Id ", num_cod_sym, count);
+	fprintf(out, "%d %Id ", num_cod_sym, count);
 
 	dfs(out, root, 0);
 
@@ -223,13 +223,12 @@ void create_new_file(FILE *in, FILE *out, tree *root, int num_cod_sym, long long
 	coding_text(in, out);
 
 //	fseek(out, 3, SEEK_SET);
-	fseek(out, 0, SEEK_SET);
-	fprintf(out, "%d", (8 - num_bit) % 8);
 }
 
 void copy_file(FILE *in)
 {
 	FILE *copyf = fopen("copyin.txt", "wb");
+	fseek(in, 0, SEEK_SET);
 	unsigned char c = 0;
 	c = fgetc(in);
 	while (!feof(in))
