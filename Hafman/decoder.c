@@ -135,7 +135,6 @@ unsigned char search_in_tree(tree* root, FILE *in)
 void decoding_text(FILE *in, FILE *out, tree *root, int byte_indent, long long int sizef)
 {
 	unsigned char c;
-	num_bit++;
 	while (!feof(in))
 	{
 		num_bit--;
@@ -143,31 +142,14 @@ void decoding_text(FILE *in, FILE *out, tree *root, int byte_indent, long long i
 		fprintf(out, "%c", c);
 		sizef--;
 	}
-	if (sizef)
-	{
-		//вот эта часть неправильная
-		//for (int i = num_bit; i < 8 - byte_indent; i++)
-		//{
-		/*	if (root->val)
-			{
-				c = root->val;
-				root = tmp;
-				i--;
-				c = root->val;
-				fprintf(out, "%c", c);
-				continue;
-			}
-			else 
-				if (bits[i] == 0) root = root->left;
-				else root = root->right;*/
 		num_bit--;
-		for (num_bit; num_bit < 8 - byte_indent; num_bit++)
-		{
-			c = search_in_tree(root, in);
-			num_bit--;
-			fprintf(out, "%c", c);
-			sizef--;
-		}		
+	while (sizef)
+	{
+		num_bit++;
+		c = search_in_tree(root, in);
+		num_bit--;
+		fprintf(out, "%c", c);
+		sizef--;		
 	}
 }
 

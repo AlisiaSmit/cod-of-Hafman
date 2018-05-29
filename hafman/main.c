@@ -7,10 +7,12 @@ int main(/*int argc, char *argv[]*/)
 	FILE *in, *out;
 	char c;
 
-	in = fopen("in.txt", "rb");
+//	in = fopen("in.txt", "rb");
+	in = fopen("out.txt", "rb");
 	if(verification(in)) return 0;
 
-	out = fopen("out.txt", "wb");
+	//out = fopen("out.txt", "wb");
+	out = fopen("new.txt", "wb");
 
 	c = fgetc(in);
 

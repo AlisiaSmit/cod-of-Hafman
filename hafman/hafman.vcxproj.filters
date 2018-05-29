@@ -52,5 +52,8 @@
     <Text Include="x64\Debug\out.txt">
       <Filter>Файлы ресурсов\NewFilter1</Filter>
     </Text>
+    <Text Include="new.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

@@ -125,6 +125,7 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="in.txt" />
+    <Text Include="new.txt" />
     <Text Include="out.txt" />
     <Text Include="x64\Debug\copyin.txt" />
     <Text Include="x64\Debug\in.txt" />
